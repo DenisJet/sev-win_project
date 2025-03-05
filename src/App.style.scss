@@ -1,0 +1,22 @@
+@use 'variables' as *; 
+
+html,
+body,
+#root {
+    height: 100%;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    margin: 0;
+    color: $white-color;
+    background-color: $gray-color;
+}
+
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    height: 100%;
+}

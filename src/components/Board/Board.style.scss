@@ -1,0 +1,7 @@
+@use '../../variables' as *; 
+
+.board_name {
+  border-bottom: 1px solid $light-gray;
+  padding: 12px;
+  font-size: 16px;
+}

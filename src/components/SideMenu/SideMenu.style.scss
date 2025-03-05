@@ -1,0 +1,58 @@
+@use '../../variables' as *; 
+
+.sidemenu {
+  border-right: 1px solid $light-gray;
+}
+
+.sidemenu_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: $light-gray;
+  border-bottom: 1px solid $light-gray;
+  padding: 5px 10px;
+
+  & p {
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  & span {
+    font-size: 10px;
+  }
+
+  & button {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+
+    & svg {
+      color: $white-color;
+    }
+  }
+}
+
+.sidemenu_list {
+  padding: 10px;
+  margin: 0;
+  list-style-type: none;
+}
+
+.sidemenu_item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+
+  & p {
+    margin: 0;
+  }
+
+  & svg {
+    fill: $white-color;
+  }
+
+  &-active {
+    background-color: $light-gray;
+  }
+}
