@@ -1,7 +1,25 @@
 @use '../../variables' as *; 
 
+.board {
+  background-color: $dark-gray;
+
+  & .board_table {
+    background-color: $dark-gray;
+    
+
+    & th {
+      color: $light-gray;
+    }
+
+    & td {
+      color: $white-color;
+    }
+  }
+}
+
 .board_name {
   border-bottom: 1px solid $light-gray;
   padding: 12px;
   font-size: 16px;
+  background-color: $gray-color;
 }
