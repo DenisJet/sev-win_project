@@ -1,14 +1,22 @@
-import { Table, TableBody, TableCell, TableRow } from "@mui/material";
+import { TableCell, TableRow } from "@mui/material";
+import { useState } from "react";
 import { Row } from "src/api/api.types";
+import { NewRow } from "../NewRow";
 
-export const RowComponent = ({
+export default function RowComponent({
   row,
   level = 0,
+  setNewRowClick,
+  newRowId,
+  refetch,
 }: {
   row: Row;
+  setNewRowClick: (id: number) => void;
+  newRowId: number;
+  refetch: () => void;
   level?: number;
-}) => {
-  let paddingLeft = 10 + level * 10;
+}) {
+  let paddingLeft = 10 + level * 20;
 
   return (
     <>
@@ -19,6 +27,7 @@ export const RowComponent = ({
           scope="row"
         >
           <svg
+            onClick={() => setNewRowClick(row.id)}
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
@@ -42,14 +51,29 @@ export const RowComponent = ({
         <TableCell>{row.overheads}</TableCell>
         <TableCell>{row.estimatedProfit}</TableCell>
       </TableRow>
+      {newRowId === row.id ? (
+        <NewRow
+          paddingLeft={paddingLeft}
+          parentId={row.id}
+          refetch={refetch}
+          setNewRowClick={setNewRowClick}
+        />
+      ) : null}
       {row.child &&
         row.child.length > 0 &&
         row.child.map((childRow) => {
           paddingLeft = paddingLeft + 5;
           return (
-            <RowComponent key={childRow.id} row={childRow} level={level + 1} />
+            <RowComponent
+              key={childRow.id}
+              row={childRow}
+              newRowId={newRowId}
+              level={level + 1}
+              setNewRowClick={setNewRowClick}
+              refetch={refetch}
+            />
           );
         })}
     </>
   );
-};
+}

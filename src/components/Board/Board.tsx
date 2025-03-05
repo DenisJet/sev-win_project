@@ -8,14 +8,18 @@ import {
   TableRow,
 } from "@mui/material";
 import "./Board.style.scss";
-import { useEffect, useState } from "react";
-import { API_BASE_URL, ENTITY_ID } from "src/api/api.constants";
 import { Row } from "src/api/api.types";
-import { RowComponent } from "./Board.service";
 import { useFetchData } from "./hooks/useGetData";
+import { RowComponent } from "../RowComponent";
+import { useState } from "react";
 
 export default function Board() {
-  const { data, loading, error } = useFetchData();
+  const [newRowId, setNewRowId] = useState<number>(0);
+  const { data, loading, error, fetchData } = useFetchData();
+
+  const handleRowIdChange = (id: number) => {
+    setNewRowId(id);
+  };
 
   if (loading) {
     return <div>Загрузка...</div>;
@@ -43,7 +47,15 @@ export default function Board() {
             </TableHead>
             <TableBody>
               {data.map((row: Row) => {
-                return <RowComponent key={row.id} row={row} />;
+                return (
+                  <RowComponent
+                    key={row.id}
+                    row={row}
+                    newRowId={newRowId}
+                    setNewRowClick={handleRowIdChange}
+                    refetch={fetchData}
+                  />
+                );
               })}
             </TableBody>
           </Table>

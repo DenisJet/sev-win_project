@@ -1,0 +1,7 @@
+@use '../../variables' as *; 
+
+.new-row input {
+  color: $white-color;
+  box-shadow: 0 0 3px $white-color;
+  padding: 2px 10px;
+}

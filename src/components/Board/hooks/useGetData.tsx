@@ -7,28 +7,31 @@ export const useFetchData = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/${ENTITY_ID}/row/list`);
-        if (!response.ok) {
-          throw new Error("Ошибка при получении данных");
-        }
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("Произошла неизвестная ошибка");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchData = async () => {
+    setLoading(true);
+    setError(null);
 
-    getData();
+    try {
+      const response = await fetch(`${API_BASE_URL}/${ENTITY_ID}/row/list`);
+      if (!response.ok) {
+        throw new Error("Ошибка при получении данных");
+      }
+      const result = await response.json();
+      setData(result);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Произошла неизвестная ошибка");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
-  return { data, loading, error };
+  return { data, loading, error, fetchData };
 };
