@@ -3,7 +3,11 @@ import { TableCell, TableRow, TextField } from "@mui/material";
 import { useState } from "react";
 import { API_BASE_URL, ENTITY_ID } from "src/api/api.constants";
 import { Row } from "src/api/api.types";
-import { updateChangedItems, updateItemById } from "src/helpers/updateStorage";
+import {
+  createItem,
+  updateChangedItems,
+  updateItemById,
+} from "src/helpers/updateStorage";
 
 export type NewRowData = {
   equipmentCosts: number;
@@ -33,7 +37,7 @@ export default function NewRow({
   setNewRowClick: (id: number) => void;
   parentId: number | null;
   refetch: () => void;
-  row?: Row;
+  row: Row | null;
   isEdit?: boolean;
   getData: () => Row[] | null;
   saveData: (data: Row[]) => void;
@@ -106,7 +110,18 @@ export default function NewRow({
         }
         setNewRowClick(0);
       } else {
-        refetch();
+        if (storageData && row) {
+          const updatedData = updateChangedItems(
+            storageData,
+            changedData.changed,
+          );
+          const finalData = createItem(
+            updatedData,
+            changedData.current,
+            row.id,
+          );
+          saveData(finalData);
+        }
       }
     } catch (error) {
       console.error("Ошибка при отправке данных на сервер:", error);

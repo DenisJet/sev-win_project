@@ -15,7 +15,10 @@ export const updateChangedItems = (
       if (changedItem) {
         return {
           ...changedItem,
-          child: item.child,
+          child:
+            item.child && item.child.length > 0
+              ? updateChangedItems(item.child, changedData)
+              : item.child,
         };
       }
 
@@ -31,6 +34,34 @@ export const updateChangedItems = (
   }
 
   return storageData;
+};
+
+export const createItem = (
+  storageData: Row[],
+  createdRow: Row,
+  parentId: number | null,
+): Row[] => {
+  if (parentId === null) {
+    return [...storageData, createdRow];
+  }
+
+  return storageData.map((item: Row) => {
+    if (item.id === parentId) {
+      return {
+        ...item,
+        child: item.child ? [...item.child, createdRow] : [createdRow],
+      };
+    }
+
+    if (item.child && item.child.length > 0) {
+      return {
+        ...item,
+        child: createItem(item.child, createdRow, parentId),
+      };
+    }
+
+    return item;
+  });
 };
 
 export const updateItemById = (storageData: Row[], changedRow: Row): Row[] => {

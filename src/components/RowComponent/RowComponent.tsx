@@ -140,6 +140,7 @@ export default function RowComponent({
           setNewRowClick={setNewRowClick}
           getData={getData}
           saveData={saveData}
+          row={row}
         />
       ) : null}
       {row.child &&

@@ -74,6 +74,7 @@ export default function Board() {
                 refetch={fetchData}
                 getData={() => data}
                 saveData={saveData}
+                row={null}
               />
             )}
           </TableBody>
