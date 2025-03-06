@@ -132,16 +132,6 @@ export default function RowComponent({
           <TableCell>{row.estimatedProfit}</TableCell>
         </TableRow>
       )}
-      {newRowId === row.id ? (
-        <NewRow
-          paddingLeft={paddingLeft}
-          parentId={row.id}
-          setNewRowClick={setNewRowClick}
-          getData={getData}
-          saveData={saveData}
-          row={null}
-        />
-      ) : null}
       {row.child &&
         row.child.length > 0 &&
         row.child.map((childRow) => {
@@ -159,6 +149,16 @@ export default function RowComponent({
             />
           );
         })}
+      {newRowId === row.id ? (
+        <NewRow
+          paddingLeft={paddingLeft + 15}
+          parentId={row.id}
+          setNewRowClick={setNewRowClick}
+          getData={getData}
+          saveData={saveData}
+          row={null}
+        />
+      ) : null}
     </>
   );
 }
