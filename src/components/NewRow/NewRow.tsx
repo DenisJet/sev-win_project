@@ -2,6 +2,7 @@ import "./NewRow.style.scss";
 import { TableCell, TableRow, TextField } from "@mui/material";
 import { useState } from "react";
 import { API_BASE_URL, ENTITY_ID } from "src/api/api.constants";
+import { Row } from "src/api/api.types";
 
 export type NewRowData = {
   equipmentCosts: number;
@@ -22,17 +23,25 @@ export default function NewRow({
   parentId,
   refetch,
   setNewRowClick,
+  row,
+  isEdit,
 }: {
   paddingLeft: number;
   setNewRowClick: (id: number) => void;
   parentId: number | null;
   refetch: () => void;
+  row?: Row;
+  isEdit?: boolean;
 }) {
-  const [name, setName] = useState("");
-  const [salary, setSalary] = useState("0");
-  const [equipmentCosts, setEquipmentCosts] = useState("0");
-  const [overheads, setOverheads] = useState("0");
-  const [estimatedProfit, setEstimatedProfit] = useState("0");
+  const [name, setName] = useState(row?.rowName || "");
+  const [salary, setSalary] = useState(row?.salary || "0");
+  const [equipmentCosts, setEquipmentCosts] = useState(
+    row?.equipmentCosts || "0",
+  );
+  const [overheads, setOverheads] = useState(row?.overheads || "0");
+  const [estimatedProfit, setEstimatedProfit] = useState(
+    row?.estimatedProfit || "0",
+  );
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
@@ -55,13 +64,22 @@ export default function NewRow({
 
   const sendDataToServer = async (rowData: NewRowData) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/${ENTITY_ID}/row/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const requestData = isEdit
+        ? (({ parentId, ...data }) => data)(rowData)
+        : rowData;
+
+      const response = await fetch(
+        `${API_BASE_URL}/${ENTITY_ID}/row${isEdit ? `/${row?.id}` : ""}/${
+          isEdit ? "update" : "create"
+        }`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestData),
         },
-        body: JSON.stringify(rowData),
-      });
+      );
 
       if (!response.ok) {
         throw new Error(`Ошибка HTTP: ${response.status}`);

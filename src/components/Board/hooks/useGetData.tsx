@@ -33,5 +33,5 @@ export const useFetchData = () => {
     fetchData();
   }, []);
 
-  return { data, loading, error, fetchData };
+  return { data, setData, loading, error, fetchData };
 };
