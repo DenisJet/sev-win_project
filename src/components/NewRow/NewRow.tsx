@@ -23,6 +23,17 @@ export type NewRowData = {
   supportCosts: number;
 };
 
+type NewRowProps = {
+  paddingLeft: number;
+  setNewRowClick: (id: number) => void;
+  parentId: number | null;
+  row: Row | null;
+  isEdit?: boolean;
+  getData: () => Row[] | null;
+  saveData: (data: Row[]) => void;
+  setIsEdit?: (flag: boolean) => void;
+};
+
 export default function NewRow({
   paddingLeft,
   parentId,
@@ -32,16 +43,7 @@ export default function NewRow({
   getData,
   saveData,
   setIsEdit,
-}: {
-  paddingLeft: number;
-  setNewRowClick: (id: number) => void;
-  parentId: number | null;
-  row: Row | null;
-  isEdit?: boolean;
-  getData: () => Row[] | null;
-  saveData: (data: Row[]) => void;
-  setIsEdit?: (flag: boolean) => void;
-}) {
+}: NewRowProps) {
   const [name, setName] = useState(row?.rowName || "");
   const [salary, setSalary] = useState(row?.salary || "0");
   const [equipmentCosts, setEquipmentCosts] = useState(

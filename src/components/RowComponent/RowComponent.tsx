@@ -5,6 +5,16 @@ import { NewRow } from "../NewRow";
 import { API_BASE_URL, ENTITY_ID } from "src/api/api.constants";
 import { deleteItemById, updateChangedItems } from "src/helpers/updateStorage";
 
+type RowComponentProps = {
+  row: Row;
+  setNewRowClick: (id: number) => void;
+  newRowId: number;
+  refetch: () => void;
+  saveData: (data: Row[]) => void;
+  getData: () => Row[] | null;
+  level?: number;
+};
+
 export default function RowComponent({
   row,
   level = 0,
@@ -13,15 +23,7 @@ export default function RowComponent({
   refetch,
   saveData,
   getData,
-}: {
-  row: Row;
-  setNewRowClick: (id: number) => void;
-  newRowId: number;
-  refetch: () => void;
-  saveData: (data: Row[]) => void;
-  getData: () => Row[] | null;
-  level?: number;
-}) {
+}: RowComponentProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   let paddingLeft = 10 + level * 20;

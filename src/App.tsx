@@ -1,5 +1,5 @@
 import "./App.style.scss";
-import Board from "./components/Board/Board";
+import { Board } from "./components/Board";
 import { Header } from "./components/Header";
 import { SideMenu } from "./components/SideMenu";
 
