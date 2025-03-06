@@ -64,7 +64,6 @@ export default function RowComponent({
           setNewRowClick={setNewRowClick}
           isEdit={isEdit}
           row={row}
-          refetch={refetch}
           getData={getData}
           saveData={saveData}
         />
@@ -136,11 +135,10 @@ export default function RowComponent({
         <NewRow
           paddingLeft={paddingLeft}
           parentId={row.id}
-          refetch={refetch}
           setNewRowClick={setNewRowClick}
           getData={getData}
           saveData={saveData}
-          row={row}
+          row={null}
         />
       ) : null}
       {row.child &&

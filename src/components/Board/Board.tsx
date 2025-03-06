@@ -71,7 +71,6 @@ export default function Board() {
                 paddingLeft={10}
                 setNewRowClick={handleRowIdChange}
                 parentId={null}
-                refetch={fetchData}
                 getData={() => data}
                 saveData={saveData}
                 row={null}

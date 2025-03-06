@@ -26,7 +26,6 @@ export type NewRowData = {
 export default function NewRow({
   paddingLeft,
   parentId,
-  refetch,
   setNewRowClick,
   row,
   isEdit,
@@ -36,7 +35,6 @@ export default function NewRow({
   paddingLeft: number;
   setNewRowClick: (id: number) => void;
   parentId: number | null;
-  refetch: () => void;
   row: Row | null;
   isEdit?: boolean;
   getData: () => Row[] | null;
@@ -137,8 +135,8 @@ export default function NewRow({
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
+          width="20"
+          height="20"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
