@@ -11,12 +11,14 @@ import "./Board.style.scss";
 import { Row } from "src/api/api.types";
 import { useFetchData } from "./hooks/useGetData";
 import { RowComponent } from "../RowComponent";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NewRow } from "../NewRow";
 
 export default function Board() {
   const [newRowId, setNewRowId] = useState<number>(0);
-  const { data, loading, error, fetchData } = useFetchData();
+  const { getData, setData, loading, error, fetchData } = useFetchData();
+
+  const data = getData();
 
   const handleRowIdChange = (id: number) => {
     setNewRowId(id);
@@ -55,6 +57,8 @@ export default function Board() {
                     newRowId={newRowId}
                     setNewRowClick={handleRowIdChange}
                     refetch={fetchData}
+                    setData={setData}
+                    getData={getData}
                   />
                 );
               })

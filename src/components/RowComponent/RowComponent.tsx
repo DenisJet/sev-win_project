@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Row } from "src/api/api.types";
 import { NewRow } from "../NewRow";
 import { API_BASE_URL, ENTITY_ID } from "src/api/api.constants";
+import { deleteItemById, updateChangedItems } from "src/helpers/updateStorage";
 
 export default function RowComponent({
   row,
@@ -10,11 +11,15 @@ export default function RowComponent({
   setNewRowClick,
   newRowId,
   refetch,
+  setData,
+  getData,
 }: {
   row: Row;
   setNewRowClick: (id: number) => void;
   newRowId: number;
   refetch: () => void;
+  setData: (data: Row[]) => void;
+  getData: () => Row[] | null;
   level?: number;
 }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -22,6 +27,7 @@ export default function RowComponent({
   let paddingLeft = 10 + level * 20;
 
   const handleDelete = async (id: number) => {
+    console.log(id);
     try {
       const response = await fetch(
         `${API_BASE_URL}/${ENTITY_ID}/row/${id}/delete`,
@@ -34,7 +40,17 @@ export default function RowComponent({
         throw new Error(`Ошибка HTTP: ${response.status}`);
       }
 
-      refetch();
+      const changedData = await response.json();
+      console.log("changedData", changedData);
+
+      const storageData = getData();
+      console.log("storageData", storageData);
+
+      if (storageData) {
+        setData(updateChangedItems(storageData, changedData.changed));
+        const updatedStorage = getData();
+        if (updatedStorage) setData(deleteItemById(updatedStorage, id));
+      }
     } catch (error) {
       console.error("Ошибка при удалении строки:", error);
     }
@@ -135,6 +151,8 @@ export default function RowComponent({
               level={level + 1}
               setNewRowClick={setNewRowClick}
               refetch={refetch}
+              setData={setData}
+              getData={getData}
             />
           );
         })}
