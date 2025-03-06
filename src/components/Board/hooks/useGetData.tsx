@@ -53,7 +53,7 @@ export const useFetchData = () => {
   }, []);
 
   return {
-    getData,
+    data,
     loading,
     error,
     fetchData,

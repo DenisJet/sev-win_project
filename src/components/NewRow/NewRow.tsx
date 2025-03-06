@@ -31,6 +31,7 @@ export default function NewRow({
   isEdit,
   getData,
   saveData,
+  setIsEdit,
 }: {
   paddingLeft: number;
   setNewRowClick: (id: number) => void;
@@ -39,6 +40,7 @@ export default function NewRow({
   isEdit?: boolean;
   getData: () => Row[] | null;
   saveData: (data: Row[]) => void;
+  setIsEdit?: (flag: boolean) => void;
 }) {
   const [name, setName] = useState(row?.rowName || "");
   const [salary, setSalary] = useState(row?.salary || "0");
@@ -106,9 +108,9 @@ export default function NewRow({
           const finalData = updateItemById(updatedData, changedData.current);
           saveData(finalData);
         }
-        setNewRowClick(0);
+        setIsEdit && setIsEdit(false);
       } else {
-        if (storageData && row) {
+        if (storageData) {
           const updatedData = updateChangedItems(
             storageData,
             changedData.changed,
@@ -116,9 +118,10 @@ export default function NewRow({
           const finalData = createItem(
             updatedData,
             changedData.current,
-            row.id,
+            parentId,
           );
           saveData(finalData);
+          setNewRowClick(0);
         }
       }
     } catch (error) {

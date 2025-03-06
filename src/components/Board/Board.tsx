@@ -16,9 +16,7 @@ import { NewRow } from "../NewRow";
 
 export default function Board() {
   const [newRowId, setNewRowId] = useState<number>(0);
-  const { getData, loading, error, fetchData, saveData } = useFetchData();
-
-  const data = getData();
+  const { data, loading, error, fetchData, saveData } = useFetchData();
 
   useEffect(() => {
     fetchData();
