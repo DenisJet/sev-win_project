@@ -11,14 +11,14 @@ export default function RowComponent({
   setNewRowClick,
   newRowId,
   refetch,
-  setData,
+  saveData,
   getData,
 }: {
   row: Row;
   setNewRowClick: (id: number) => void;
   newRowId: number;
   refetch: () => void;
-  setData: (data: Row[]) => void;
+  saveData: (data: Row[]) => void;
   getData: () => Row[] | null;
   level?: number;
 }) {
@@ -27,7 +27,6 @@ export default function RowComponent({
   let paddingLeft = 10 + level * 20;
 
   const handleDelete = async (id: number) => {
-    console.log(id);
     try {
       const response = await fetch(
         `${API_BASE_URL}/${ENTITY_ID}/row/${id}/delete`,
@@ -41,15 +40,15 @@ export default function RowComponent({
       }
 
       const changedData = await response.json();
-      console.log("changedData", changedData);
-
       const storageData = getData();
-      console.log("storageData", storageData);
 
       if (storageData) {
-        setData(updateChangedItems(storageData, changedData.changed));
-        const updatedStorage = getData();
-        if (updatedStorage) setData(deleteItemById(updatedStorage, id));
+        const updatedData = updateChangedItems(
+          storageData,
+          changedData.changed,
+        );
+        const finalData = deleteItemById(updatedData, id);
+        saveData(finalData);
       }
     } catch (error) {
       console.error("Ошибка при удалении строки:", error);
@@ -151,7 +150,7 @@ export default function RowComponent({
               level={level + 1}
               setNewRowClick={setNewRowClick}
               refetch={refetch}
-              setData={setData}
+              saveData={saveData}
               getData={getData}
             />
           );

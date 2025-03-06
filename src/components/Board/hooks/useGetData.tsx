@@ -7,14 +7,16 @@ const STORAGE_KEY = "cachedData";
 export const useFetchData = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [data, setData] = useState<Row[] | null>(null);
 
   const getData = (): Row[] | null => {
     const cachedData = localStorage.getItem(STORAGE_KEY);
     return cachedData ? JSON.parse(cachedData) : null;
   };
 
-  const setData = (data: Row[]) => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  const saveData = (newData: Row[]) => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
+    setData(newData);
   };
 
   const fetchData = async () => {
@@ -28,7 +30,7 @@ export const useFetchData = () => {
       }
 
       const result = await response.json();
-      setData(result);
+      saveData(result);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -45,6 +47,7 @@ export const useFetchData = () => {
     if (!cachedData) {
       fetchData();
     } else {
+      setData(cachedData);
       setLoading(false);
     }
   }, []);
@@ -54,6 +57,6 @@ export const useFetchData = () => {
     loading,
     error,
     fetchData,
-    setData,
+    saveData,
   };
 };

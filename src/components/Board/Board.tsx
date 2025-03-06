@@ -16,9 +16,13 @@ import { NewRow } from "../NewRow";
 
 export default function Board() {
   const [newRowId, setNewRowId] = useState<number>(0);
-  const { getData, setData, loading, error, fetchData } = useFetchData();
+  const { getData, loading, error, fetchData, saveData } = useFetchData();
 
   const data = getData();
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleRowIdChange = (id: number) => {
     setNewRowId(id);
@@ -57,8 +61,8 @@ export default function Board() {
                     newRowId={newRowId}
                     setNewRowClick={handleRowIdChange}
                     refetch={fetchData}
-                    setData={setData}
-                    getData={getData}
+                    saveData={saveData} // Передаем функцию для сохранения данных
+                    getData={() => data} // Передаем текущие данные
                   />
                 );
               })
