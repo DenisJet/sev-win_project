@@ -33,6 +33,26 @@ export const updateChangedItems = (
   return storageData;
 };
 
+export const updateItemById = (storageData: Row[], changedRow: Row): Row[] => {
+  return storageData.map((item: Row) => {
+    if (item.id === changedRow.id) {
+      return {
+        ...changedRow,
+        child: item.child || [],
+      };
+    }
+
+    if (item.child && item.child.length > 0) {
+      return {
+        ...item,
+        child: updateItemById(item.child, changedRow),
+      };
+    }
+
+    return item;
+  });
+};
+
 export const deleteItemById = (storageData: Row[], rowId: number): Row[] => {
   return storageData
     .filter((item) => item.id !== rowId)

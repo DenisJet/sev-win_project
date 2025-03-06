@@ -3,6 +3,7 @@ import { TableCell, TableRow, TextField } from "@mui/material";
 import { useState } from "react";
 import { API_BASE_URL, ENTITY_ID } from "src/api/api.constants";
 import { Row } from "src/api/api.types";
+import { updateChangedItems, updateItemById } from "src/helpers/updateStorage";
 
 export type NewRowData = {
   equipmentCosts: number;
@@ -25,6 +26,8 @@ export default function NewRow({
   setNewRowClick,
   row,
   isEdit,
+  getData,
+  saveData,
 }: {
   paddingLeft: number;
   setNewRowClick: (id: number) => void;
@@ -32,6 +35,8 @@ export default function NewRow({
   refetch: () => void;
   row?: Row;
   isEdit?: boolean;
+  getData: () => Row[] | null;
+  saveData: (data: Row[]) => void;
 }) {
   const [name, setName] = useState(row?.rowName || "");
   const [salary, setSalary] = useState(row?.salary || "0");
@@ -85,8 +90,24 @@ export default function NewRow({
         throw new Error(`Ошибка HTTP: ${response.status}`);
       }
 
-      refetch();
-      setNewRowClick(0);
+      const changedData = await response.json();
+      console.log("changedData", changedData);
+      const storageData = getData();
+      console.log("storageData", storageData);
+
+      if (isEdit) {
+        if (storageData) {
+          const updatedData = updateChangedItems(
+            storageData,
+            changedData.changed,
+          );
+          const finalData = updateItemById(updatedData, changedData.current);
+          saveData(finalData);
+        }
+        setNewRowClick(0);
+      } else {
+        refetch();
+      }
     } catch (error) {
       console.error("Ошибка при отправке данных на сервер:", error);
     }

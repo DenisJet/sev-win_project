@@ -61,8 +61,8 @@ export default function Board() {
                     newRowId={newRowId}
                     setNewRowClick={handleRowIdChange}
                     refetch={fetchData}
-                    saveData={saveData} // Передаем функцию для сохранения данных
-                    getData={() => data} // Передаем текущие данные
+                    saveData={saveData}
+                    getData={() => data}
                   />
                 );
               })
@@ -72,6 +72,8 @@ export default function Board() {
                 setNewRowClick={handleRowIdChange}
                 parentId={null}
                 refetch={fetchData}
+                getData={() => data}
+                saveData={saveData}
               />
             )}
           </TableBody>

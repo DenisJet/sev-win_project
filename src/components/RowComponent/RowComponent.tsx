@@ -65,6 +65,8 @@ export default function RowComponent({
           isEdit={isEdit}
           row={row}
           refetch={refetch}
+          getData={getData}
+          saveData={saveData}
         />
       )}
       {!isEdit && (
@@ -136,6 +138,8 @@ export default function RowComponent({
           parentId={row.id}
           refetch={refetch}
           setNewRowClick={setNewRowClick}
+          getData={getData}
+          saveData={saveData}
         />
       ) : null}
       {row.child &&
